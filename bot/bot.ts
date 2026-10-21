@@ -90,7 +90,8 @@ function mainMenu(content: SiteContent): Screen {
     .text('📞 WhatsApp & info', 'in')
     .text('🖼 Foto & logo', 'ft')
     .row()
-    .text('👀 Ringkasan', 'sum');
+    .text('👀 Ringkasan', 'sum')
+    .text('📖 Panduan', 'g:');
   if (env.siteUrl) kb.url('🌐 Buka website', env.siteUrl);
   return {
     text: `<b>⚙️ Pengaturan website ${esc(content.business.name)}</b>\n\nPilih bagian yang ingin diubah. Setiap perubahan langsung disimpan dan website diperbarui otomatis.`,
@@ -198,6 +199,126 @@ function summary(content: SiteContent): Screen {
   return { text, keyboard: new InlineKeyboard().text('⬅️ Menu', 'm') };
 }
 
+// ---------------------------------------------------------------------------
+// Panduan (/panduan)
+// ---------------------------------------------------------------------------
+
+const GUIDE: Record<string, { title: string; body: string[] }> = {
+  mulai: {
+    title: '🚀 Mulai di sini',
+    body: [
+      'Bot ini mengatur isi website. Setiap perubahan langsung disimpan, lalu website <b>diperbarui otomatis dalam ±1–2 menit</b>.',
+      '',
+      '<b>Cara mengubah apa pun:</b>',
+      '1. Ketik /menu lalu pilih bagian yang ingin diubah.',
+      '2. Tekan tombol ✏️ pada kolom yang ingin diganti.',
+      '3. Bot mengirim pesan berisi nilai sekarang.',
+      '4. <b>Balas (reply)</b> pesan bot itu dengan isi baru.',
+      '   • HP: tekan lama pesan bot → <i>Balas</i>',
+      '   • Desktop: klik kanan pesan bot → <i>Reply</i>',
+      '5. Bot menjawab ✅ jika berhasil.',
+      '',
+      '🔒 Hanya <b>admin grup</b> yang bisa mengubah. Bisa dipakai di grup atau chat pribadi dengan bot.',
+    ],
+  },
+  paket: {
+    title: '📦 Paket & harga',
+    body: [
+      'Buka /paket lalu pilih paket.',
+      '',
+      '<b>Ubah harga:</b> tekan 💰 Harga → balas dengan angka, mis. <code>12000</code> atau <code>12.000</code>.',
+      '<b>Ubah fitur:</b> tekan ✅ Fitur → balas dengan <b>satu fitur per baris</b>:',
+      '<code>Cuci &amp; pengeringan\nSetrika rapi\nPewangi</code>',
+      '<b>Label pojok:</b> 🏷 Label, mis. <code>Terlaris</code>. Kirim <code>-</code> untuk menghapus.',
+      '<b>Paket unggulan:</b> tombol ⭐ membuat kartu paket berwarna kuning.',
+      '<b>Urutan:</b> ⬆️ Naikkan / ⬇️ Turunkan.',
+      '<b>Ikon:</b> 🎨 Ikon lalu pilih gambar.',
+      '',
+      '<b>Tambah paket baru:</b> ➕ Tambah paket → balas dengan format:',
+      '<code>Nama | Harga | Satuan | Durasi</code>',
+      'Contoh: <code>Cuci Sepatu | 25000 | pasang | 3 hari</code>',
+      'Satuan boleh dilewati (otomatis kg): <code>Cuci Karpet | 15000 | 3 hari</code>',
+      '',
+      '<b>Hapus paket:</b> 🗑 Hapus paket → Ya, hapus. Minimal harus tersisa 1 paket.',
+    ],
+  },
+  teks: {
+    title: '✏️ Teks halaman',
+    body: [
+      'Buka /teks lalu pilih bagian halaman:',
+      '• <b>Bagian atas (hero)</b>: judul besar, deskripsi, tulisan tombol',
+      '• <b>Keunggulan</b>: 3 poin di bawah foto utama',
+      '• <b>Judul bagian paket</b>: judul &amp; catatan di atas kartu paket',
+      '• <b>Cara pesan</b>: 3 langkah pemesanan',
+      '• <b>Ajakan cek status</b>: bagian "Sudah titip cucian?"',
+      '• <b>Judul tab &amp; Google</b>: judul di tab browser &amp; saat link dibagikan',
+      '',
+      'Kolom bertanda <i>opsional</i> bisa dikosongkan dengan mengirim <code>-</code>.',
+      'Setiap kolom punya batas panjang; bot akan memberi tahu jika terlalu panjang.',
+    ],
+  },
+  info: {
+    title: '📞 WhatsApp & info usaha',
+    body: [
+      'Buka /info untuk mengubah:',
+      '• <b>Nomor WhatsApp</b>: tujuan semua pesanan dari website. Contoh <code>0815-9114-401</code>.',
+      '• <b>Nama usaha</b>: dipakai di judul dan pesan WhatsApp.',
+      '• <b>Alamat</b> &amp; <b>Jam buka</b>: tampil di bagian bawah website.',
+      '• <b>Link Google Maps</b>: alamat jadi bisa diklik. Buka Google Maps → Bagikan → Salin link.',
+      '',
+      'Kirim <code>-</code> untuk menyembunyikan alamat, jam buka, atau link Maps.',
+    ],
+  },
+  foto: {
+    title: '🖼 Foto & logo',
+    body: [
+      'Buka /foto lalu tekan <b>Ganti foto utama</b> atau <b>Ganti logo</b>.',
+      'Balas pesan bot dengan gambar (JPG, PNG, atau WebP, maks. 10 MB).',
+      '',
+      '• <b>Foto utama</b>: sebaiknya horizontal (landscape) dan terang.',
+      '• <b>Logo</b>: kirim sebagai <b>File</b> (📎 → File), bukan Foto, agar latar transparan tidak hilang dan gambar tidak dikompres.',
+      '',
+      'Website otomatis mengecilkan ukuran gambar agar tetap cepat dibuka di HP.',
+    ],
+  },
+  tips: {
+    title: '💡 Tips & masalah umum',
+    body: [
+      '<b>Bot tidak merespons balasan saya?</b>',
+      'Pastikan kamu <b>membalas (reply)</b> pesan bot, bukan mengirim pesan biasa.',
+      '',
+      '<b>"Khusus admin grup"?</b>',
+      'Minta pemilik grup menjadikanmu admin.',
+      '',
+      '<b>Website belum berubah?</b>',
+      'Tunggu ±1–2 menit lalu muat ulang halaman. Bot mengabari grup saat website selesai diperbarui.',
+      '',
+      '<b>Melihat isi website saat ini:</b> /lihat',
+      '<b>Melihat ID grup/akun:</b> /id',
+      '',
+      'Perubahan tercatat di GitHub, jadi kesalahan masih bisa dikembalikan oleh pengelola website.',
+    ],
+  },
+};
+
+function guideScreen(topic?: string): Screen {
+  const kb = new InlineKeyboard();
+  const keys = Object.keys(GUIDE);
+  keys.forEach((k, i) => {
+    kb.text(k === topic ? `• ${GUIDE[k].title}` : GUIDE[k].title, `g:${k}`);
+    if (i % 2 === 1) kb.row();
+  });
+  if (topic) kb.row().text('⬅️ Daftar panduan', 'g:');
+  if (!topic) {
+    return {
+      text: '<b>📖 Panduan bot Easywash</b>\n\nPilih topik di bawah. Baru pertama kali? Mulai dari <b>🚀 Mulai di sini</b>.\n\nPerintah singkat:\n/menu · /paket · /teks · /info · /foto · /lihat · /panduan',
+      keyboard: kb,
+    };
+  }
+  const g = GUIDE[topic] ?? GUIDE.mulai;
+  return { text: `<b>${esc(g.title)}</b>\n\n${g.body.join('\n')}`, keyboard: kb };
+}
+
 async function screenFor(key: string, content: SiteContent): Promise<Screen> {
   if (key === 'm') return mainMenu(content);
   if (key === 'pk') return packagesMenu(content);
@@ -250,7 +371,14 @@ export function createBot() {
       await next();
     } catch (err: any) {
       console.error('Bot error:', err);
-      const text = err?.message && !String(err.message).startsWith('GitHub') ? err.message : 'Terjadi kesalahan. Coba lagi sebentar lagi.';
+      const msg = String(err?.message ?? '');
+      const text = msg.startsWith('GitHub 401')
+        ? 'Token GitHub di Vercel tidak valid. Hubungi pengelola website.'
+        : msg.startsWith('GitHub 403') || msg.startsWith('GitHub 404')
+          ? 'Token GitHub tidak punya akses ke repo website. Hubungi pengelola website.'
+          : msg && !msg.startsWith('GitHub')
+            ? msg
+            : 'Terjadi kesalahan. Coba lagi sebentar lagi.';
       try {
         if (ctx.callbackQuery) await ctx.answerCallbackQuery({ text: `⚠️ ${text}`.slice(0, 190), show_alert: true });
         else throw 0;
@@ -266,6 +394,18 @@ export function createBot() {
   bot.command('id', (ctx) =>
     ctx.reply(`Chat ID: <code>${ctx.chat.id}</code>\nUser ID kamu: <code>${ctx.from?.id}</code>`, { parse_mode: 'HTML' }),
   );
+
+  // /panduan — bisa dibuka siapa saja di grup Easywash / chat pribadi
+  const allowedChat = (ctx: Context) => !!ctx.chat && (ctx.chat.id === groupId || ctx.chat.type === 'private');
+  bot.command(['panduan', 'guide'], async (ctx) => {
+    if (!allowedChat(ctx)) return;
+    const s = guideScreen(ctx.match?.trim().toLowerCase() || undefined);
+    await ctx.reply(s.text, { parse_mode: 'HTML', reply_markup: s.keyboard });
+  });
+  bot.callbackQuery(/^g:(\w*)$/, async (ctx) => {
+    await ctx.answerCallbackQuery();
+    await show(ctx, guideScreen(ctx.match[1] || undefined));
+  });
 
   // Hanya grup Easywash & chat pribadi yang dilayani
   bot.use(async (ctx, next) => {
@@ -290,6 +430,7 @@ export function createBot() {
     '/info — nomor WhatsApp, alamat, jam buka',
     '/foto — ganti foto utama & logo',
     '/lihat — ringkasan isi website',
+    '/panduan — panduan lengkap langkah demi langkah',
     '',
     'Cara mengubah: tekan tombol ✏️, lalu <b>balas (reply)</b> pesan dari bot dengan isi baru.',
   ].join('\n');
@@ -580,5 +721,6 @@ export const COMMANDS = [
   { command: 'info', description: 'WhatsApp, alamat, jam buka' },
   { command: 'foto', description: 'Ganti foto utama & logo' },
   { command: 'lihat', description: 'Ringkasan isi website' },
-  { command: 'bantuan', description: 'Cara memakai bot' },
+  { command: 'panduan', description: 'Panduan lengkap memakai bot' },
+  { command: 'bantuan', description: 'Daftar perintah singkat' },
 ];
