@@ -1,0 +1,70 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/easywash-logo.png';
+import Icon from './Icon.astro';
+---
+
+<header class="sticky top-0 z-40 border-b border-transparent bg-background" data-header>
+  <div class="page-width flex h-[68px] items-center justify-between gap-4 md:h-[88px]">
+    <a href="/" aria-label="Easywash beranda" class="shrink-0">
+      <Image src={logo} alt="Easywash — Clean, Fast, Fresh" width={244} class="h-[52px] w-auto mix-blend-multiply md:h-[70px]" loading="eager" />
+    </a>
+
+    <nav class="hidden items-center gap-8 text-sm md:flex" aria-label="Navigasi utama">
+      <a href="/#paket" class="hover:text-primary">Paket Laundry</a>
+      <a href="/#cara-pesan" class="hover:text-primary">Cara Pesan</a>
+      <button type="button" class="btn btn-ghost min-h-9 px-3 font-normal" data-action="check">Cek Status</button>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <button type="button" class="btn btn-outline min-h-10 px-4" data-action="contact">
+        <Icon name="message-circle" />
+        <span class="hidden sm:inline">Hubungi Kami</span>
+        <span class="sm:hidden">WhatsApp</span>
+      </button>
+      <button
+        type="button"
+        class="grid size-10 place-items-center rounded-md border border-border md:hidden"
+        aria-label="Buka menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-toggle
+      >
+        <Icon name="menu" size={20} class="menu-open" />
+        <Icon name="x" size={20} class="menu-close hidden" />
+      </button>
+    </div>
+  </div>
+
+  <nav id="mobile-menu" class="hidden border-t border-border bg-background md:hidden" aria-label="Navigasi seluler">
+    <div class="page-width grid py-2 text-[15px] font-medium">
+      <a href="/#paket" class="flex min-h-12 items-center border-b border-border" data-menu-link>Paket Laundry</a>
+      <a href="/#cara-pesan" class="flex min-h-12 items-center border-b border-border" data-menu-link>Cara Pesan</a>
+      <button type="button" class="flex min-h-12 items-center text-left" data-action="check" data-menu-link>Cek Status Cucian</button>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.getElementById('mobile-menu');
+
+  function setOpen(open: boolean) {
+    if (!toggle || !menu) return;
+    menu.classList.toggle('hidden', !open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
+    toggle.querySelector('.menu-open')?.classList.toggle('hidden', open);
+    toggle.querySelector('.menu-close')?.classList.toggle('hidden', !open);
+  }
+
+  toggle?.addEventListener('click', () => setOpen(menu?.classList.contains('hidden') ?? false));
+  document.querySelectorAll('[data-menu-link]').forEach((el) => el.addEventListener('click', () => setOpen(false)));
+  window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => e.matches && setOpen(false));
+
+  // Garis bawah header muncul saat halaman di-scroll
+  const onScroll = () => header?.classList.toggle('border-border', window.scrollY > 8);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>

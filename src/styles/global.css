@@ -1,0 +1,154 @@
+@import 'tailwindcss';
+
+/* ---------- Design tokens (sama dengan versi HTML lama) ---------- */
+:root {
+  --background: oklch(100% 0 0);
+  --foreground: oklch(28% 0.035 170);
+  --primary: oklch(46% 0.12 165);
+  --primary-foreground: oklch(100% 0 0);
+  --secondary: oklch(96% 0.095 98);
+  --action: oklch(88% 0.17 96);
+  --action-hover: oklch(83% 0.16 96);
+  --brand-yellow: oklch(78% 0.17 92);
+  --muted: oklch(98% 0.007 165);
+  --muted-foreground: oklch(53% 0.015 170);
+  --border: oklch(90% 0.016 165);
+  --overlay: oklch(20% 0.025 165 / 0.55);
+  --shadow-soft: 0 12px 36px oklch(28% 0.035 170 / 0.08);
+}
+
+@theme inline {
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-action: var(--action);
+  --color-action-hover: var(--action-hover);
+  --color-brand-yellow: var(--brand-yellow);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+}
+
+/* ---------- Base ---------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  * { border-color: var(--border); }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  h1, h2, h3 { font-family: var(--font-heading); }
+  button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+  button { cursor: pointer; }
+
+  /* 16px mencegah zoom otomatis di iOS saat input difokuskan */
+  input, select, textarea {
+    @apply w-full rounded-md border border-border bg-background text-foreground;
+    font: inherit;
+    font-size: 16px;
+    padding: 11px 12px;
+    min-height: 46px;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+  label { @apply grid gap-[7px] text-[13px] font-medium; }
+
+  :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+/* ---------- Komponen ---------- */
+@layer components {
+  .page-width {
+    @apply mx-auto w-full max-w-[1184px] px-5 md:px-8;
+  }
+  .eyebrow {
+    @apply text-[11px] font-bold uppercase tracking-[2px] text-primary;
+  }
+  .section-title {
+    @apply text-[26px] leading-[1.3] font-extrabold sm:text-[30px] md:text-[34px];
+  }
+
+  .btn {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-5 text-sm font-semibold whitespace-nowrap transition-colors select-none;
+  }
+  .btn svg { @apply size-4 shrink-0; }
+  .btn-action { @apply bg-action text-foreground shadow-sm hover:bg-action-hover; }
+  .btn-outline { @apply border border-border bg-background shadow-sm hover:bg-secondary; }
+  .btn-ghost { @apply hover:bg-secondary; }
+  .btn-lg { @apply min-h-12 px-7; }
+
+  .icon-box {
+    @apply grid size-12 place-items-center rounded-lg bg-secondary text-primary;
+  }
+
+  .service-card {
+    @apply relative flex flex-col rounded-xl border border-border bg-background p-6 transition duration-200 sm:p-7;
+  }
+  @media (hover: hover) {
+    .service-card:hover { box-shadow: var(--shadow-soft); transform: translateY(-4px); }
+  }
+  .service-card.featured {
+    @apply border-[1.5px] border-primary bg-secondary;
+  }
+  .service-card.featured .icon-box { @apply bg-background; }
+
+  .order-summary { @apply rounded-md bg-secondary p-4; }
+  .form-grid { @apply grid gap-[17px]; }
+
+  /* ---------- Dialog: bottom sheet di HP, modal di layar besar ---------- */
+  dialog.sheet {
+    @apply m-0 w-full max-w-none border-0 bg-background p-0 text-foreground;
+    position: fixed;
+    inset: auto 0 0 0;
+    max-height: 92dvh;
+    border-radius: 18px 18px 0 0;
+    overflow: hidden;
+  }
+  dialog.sheet[open] { display: flex; flex-direction: column; animation: sheet-up 0.25s ease-out; }
+  dialog.sheet::backdrop { background: var(--overlay); }
+  .sheet-body {
+    @apply overflow-y-auto px-5 pt-3;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
+    overscroll-behavior: contain;
+  }
+  .sheet-handle { @apply mx-auto mb-2 h-1.5 w-10 rounded-full bg-border; }
+  @media (min-width: 640px) {
+    dialog.sheet {
+      inset: 0;
+      margin: auto;
+      width: min(500px, calc(100% - 32px));
+      max-height: 90vh;
+      height: fit-content;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    dialog.sheet[open] { animation: fade-in 0.2s ease-out; }
+    .sheet-body { @apply px-7 pt-6 pb-7; }
+    .sheet-handle { display: none; }
+  }
+}
+
+@keyframes sheet-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Kunci scroll halaman saat dialog terbuka */
+html:has(dialog[open]) { overflow: hidden; }

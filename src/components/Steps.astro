@@ -1,0 +1,32 @@
+---
+import Icon, { type Name } from './Icon.astro';
+
+const steps: { icon: Name; title: string; text: string }[] = [
+  { icon: 'shirt', title: 'Pilih paketmu', text: 'Temukan layanan yang cocok untuk cucianmu.' },
+  { icon: 'message-circle', title: 'Pesan lewat WhatsApp', text: 'Kirim detail pesanan dan konfirmasi dengan kami.' },
+  { icon: 'package-check', title: 'Kami yang bereskan', text: 'Dapatkan kabar saat cucianmu sudah siap.' },
+];
+---
+
+<section id="cara-pesan" class="scroll-mt-16 bg-muted py-14 md:scroll-mt-20">
+  <div class="page-width">
+    <div class="text-center">
+      <p class="eyebrow">Tanpa ribet</p>
+      <h2 class="section-title mt-3">Cucian beres dalam 3 langkah.</h2>
+    </div>
+    <ol class="mt-10 grid gap-8 md:grid-cols-3 md:gap-9">
+      {
+        steps.map((step, i) => (
+          <li class="flex gap-4">
+            <span class="pt-1 text-sm font-bold text-primary">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <Icon name={step.icon} size={25} strokeWidth={1.5} class="mb-4 text-primary" />
+              <h3 class="font-bold">{step.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{step.text}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

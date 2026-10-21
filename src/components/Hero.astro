@@ -1,0 +1,52 @@
+---
+import { Image } from 'astro:assets';
+import heroImage from '../assets/easywash-laundry.jpg';
+import Icon from './Icon.astro';
+---
+
+<section class="relative overflow-hidden bg-muted">
+  <Image
+    src={heroImage}
+    alt="Handuk bersih terlipat di ruang laundry Easywash"
+    widths={[640, 960, 1280, 1536]}
+    sizes="100vw"
+    class="absolute inset-0 h-full w-full object-cover object-[72%_bottom] opacity-35 md:object-[center_60%] md:opacity-100"
+    loading="eager"
+    fetchpriority="high"
+  />
+  <!-- Gradasi agar teks tetap terbaca di layar kecil -->
+  <div class="absolute inset-0 bg-gradient-to-b from-muted/90 via-muted/60 to-transparent md:hidden" aria-hidden="true"></div>
+
+  <div class="page-width relative flex flex-col items-start pt-10 pb-14 sm:pt-14 md:min-h-[560px] md:justify-center md:py-16">
+    <div class="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-2 text-xs font-medium text-primary">
+      <Icon name="sparkles" size={14} />
+      Sedikit cucian, lebih banyak waktu untukmu
+    </div>
+
+    <h1 class="mt-[18px] mb-5 max-w-[560px] text-[clamp(2.25rem,9vw,3.875rem)] leading-[1.15] font-extrabold">
+      <span class="text-primary">EASY<span class="text-brand-yellow">WASH</span></span><br />
+      Bersihnya beres.<br />
+      <span class="text-primary">Hidup lebih easy.</span>
+    </h1>
+
+    <p class="max-w-[420px] text-base leading-[1.85] text-foreground md:text-muted-foreground">
+      Serahkan urusan cucian pada kami. Pilih paketmu, pesan lewat WhatsApp, dan nikmati hari tanpa repot.
+    </p>
+
+    <div class="mt-7 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+      <a href="#paket" class="btn btn-action btn-lg w-full sm:w-auto">
+        Pilih Paket Laundry
+        <Icon name="arrow-right" />
+      </a>
+      <button type="button" class="btn btn-outline btn-lg w-full sm:w-auto" data-action="check">
+        Cek Status
+        <Icon name="package-check" />
+      </button>
+    </div>
+
+    <div class="mt-6 flex items-center gap-2 text-xs text-muted-foreground">
+      <Icon name="shield-check" size={15} class="text-primary" />
+      Pakaianmu dirawat, bukan sekadar dicuci.
+    </div>
+  </div>
+</section>

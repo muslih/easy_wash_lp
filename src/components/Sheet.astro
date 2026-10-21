@@ -1,0 +1,26 @@
+---
+// Dialog yang tampil sebagai bottom sheet di HP dan modal di desktop.
+import Icon from './Icon.astro';
+
+interface Props {
+  id: string;
+  title?: string;
+  description?: string;
+  titleId?: string;
+}
+const { id, title, description, titleId = `${id}-title` } = Astro.props;
+---
+
+<dialog id={id} class="sheet" aria-labelledby={titleId}>
+  <div class="sheet-body">
+    <div class="sheet-handle" aria-hidden="true"></div>
+    <div class="mb-1 flex items-start justify-between gap-4">
+      <h2 id={titleId} class="text-[22px] font-bold">{title}</h2>
+      <button type="button" class="-mt-1 -mr-2 grid size-10 shrink-0 place-items-center rounded-md hover:bg-secondary" aria-label="Tutup" data-close>
+        <Icon name="x" size={20} />
+      </button>
+    </div>
+    {description && <p class="mb-5 text-sm text-muted-foreground" data-description>{description}</p>}
+    <slot />
+  </div>
+</dialog>

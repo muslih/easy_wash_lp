@@ -1,0 +1,25 @@
+---
+import Icon, { type Name } from './Icon.astro';
+
+const items: { icon: Name; title: string; text: string }[] = [
+  { icon: 'sparkles', title: 'Bersih sampai seratnya', text: 'Perawatan untuk setiap pakaian' },
+  { icon: 'message-circle', title: 'Pesan semudah chat', text: 'Langsung terhubung via WhatsApp' },
+  { icon: 'leaf', title: 'Rapi, wangi, siap pakai', text: 'Satu urusan lebih sedikit' },
+];
+---
+
+<section class="border-b border-border bg-background">
+  <div class="page-width grid grid-cols-1 gap-5 py-6 sm:grid-cols-3">
+    {
+      items.map((item) => (
+        <div class="flex items-center gap-4 sm:justify-center">
+          <Icon name={item.icon} size={25} strokeWidth={1.5} class="shrink-0 text-primary" />
+          <div>
+            <h3 class="text-sm font-semibold">{item.title}</h3>
+            <p class="mt-1 text-xs text-muted-foreground">{item.text}</p>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>

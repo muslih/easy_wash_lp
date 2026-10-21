@@ -1,0 +1,16 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/easywash-logo.png';
+import Icon from './Icon.astro';
+---
+
+<footer class="border-t border-border pb-[calc(80px+env(safe-area-inset-bottom))] md:pb-0">
+  <div class="page-width flex flex-col items-start gap-4 py-7 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+    <Image src={logo} alt="Easywash — Clean, Fast, Fresh" width={244} class="h-[60px] w-auto mix-blend-multiply md:h-[70px]" />
+    <p class="text-xs text-muted-foreground">© {new Date().getFullYear()} Easywash. CLEAN • FAST • FRESH</p>
+    <a href="/status" class="inline-flex min-h-10 items-center gap-1 text-xs text-muted-foreground hover:text-primary">
+      Kirim status pelanggan
+      <Icon name="arrow-right" size={12} />
+    </a>
+  </div>
+</footer>
