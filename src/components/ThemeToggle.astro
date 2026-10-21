@@ -1,0 +1,20 @@
+---
+// Tombol ganti mode terang / gelap. Pilihan disimpan di browser pengunjung.
+import Icon from './Icon.astro';
+
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<button
+  type="button"
+  class:list={['grid size-10 shrink-0 place-items-center rounded-md border border-border hover:bg-secondary', className]}
+  data-theme-toggle
+  aria-label="Ganti ke mode gelap"
+  title="Ganti mode terang/gelap"
+>
+  <Icon name="moon" size={18} class="theme-icon-light" />
+  <Icon name="sun" size={18} class="theme-icon-dark" />
+</button>

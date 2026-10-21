@@ -12,12 +12,14 @@ import Icon from './Icon.astro';
     alt={`Ruang laundry ${content.business.name}`}
     widths={[640, 960, 1280, 1536]}
     sizes="100vw"
-    class="absolute inset-0 h-full w-full object-cover object-[72%_bottom] opacity-35 md:object-[center_60%] md:opacity-100"
+    class="absolute inset-0 h-full w-full object-cover object-[72%_bottom] opacity-35 md:object-[center_60%] md:opacity-100 dark:opacity-25 dark:md:opacity-70"
     loading="eager"
     fetchpriority="high"
   />
   <!-- Gradasi agar teks tetap terbaca di layar kecil -->
-  <div class="absolute inset-0 bg-gradient-to-b from-muted/90 via-muted/60 to-transparent md:hidden" aria-hidden="true"></div>
+  <div class="absolute inset-0 bg-gradient-to-b from-muted/90 via-muted/60 to-transparent md:hidden dark:from-background/95 dark:via-background/80 dark:to-background/40" aria-hidden="true"></div>
+  <!-- Mode gelap di layar besar: gelapkan sisi kiri foto agar teks tetap terbaca -->
+  <div class="absolute inset-0 hidden bg-gradient-to-r from-background via-background/85 to-background/10 dark:md:block" aria-hidden="true"></div>
 
   <div class="page-width relative flex flex-col items-start pt-10 pb-14 sm:pt-14 md:min-h-[560px] md:justify-center md:py-16">
     {

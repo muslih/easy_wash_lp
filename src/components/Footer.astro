@@ -7,7 +7,7 @@ import Icon from './Icon.astro';
 
 <footer class="border-t border-border pb-[calc(80px+env(safe-area-inset-bottom))] md:pb-0">
   <div class="page-width flex flex-col items-start gap-4 py-7 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-    <Image src={logo} alt={site.name} width={244} class="h-[60px] w-auto mix-blend-multiply md:h-[70px]" />
+    <Image src={logo} alt={site.name} width={244} class="brand-logo h-[60px] w-auto md:h-[70px]" />
     {
       (site.address || site.hours) && (
         <div class="grid gap-1 text-xs text-muted-foreground">

@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Icon from '../components/Icon.astro';
 import Notice from '../components/Notice.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
 import { statuses, site } from '../data/config';
 ---
 
@@ -10,10 +11,13 @@ import { statuses, site } from '../data/config';
   description={`Siapkan dan kirim pembaruan status cucian ${site.name} melalui WhatsApp.`}
 >
   <main class="page-width py-6 pb-[calc(32px+env(safe-area-inset-bottom))] sm:py-10">
-    <a href="/" class="inline-flex min-h-10 items-center gap-2 text-sm text-muted-foreground hover:text-primary">
-      <Icon name="arrow-left" size={16} />
-      Kembali ke {site.name}
-    </a>
+    <div class="flex items-center justify-between gap-4">
+      <a href="/" class="inline-flex min-h-10 items-center gap-2 text-sm text-muted-foreground hover:text-primary">
+        <Icon name="arrow-left" size={16} />
+        Kembali ke {site.name}
+      </a>
+      <ThemeToggle />
+    </div>
 
     <div class="mx-auto mt-6 max-w-xl sm:mt-12">
       <span class="icon-box"><Icon name="droplets" /></span>

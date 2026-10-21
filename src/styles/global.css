@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* Mode gelap aktif saat <html class="dark"> (diatur oleh tombol tema / preferensi sistem) */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ---------- Design tokens (sama dengan versi HTML lama) ---------- */
 :root {
   --background: oklch(100% 0 0);
@@ -9,12 +12,35 @@
   --secondary: oklch(96% 0.095 98);
   --action: oklch(88% 0.17 96);
   --action-hover: oklch(83% 0.16 96);
+  --action-foreground: oklch(24% 0.035 170);
   --brand-yellow: oklch(78% 0.17 92);
   --muted: oklch(98% 0.007 165);
   --muted-foreground: oklch(53% 0.015 170);
   --border: oklch(90% 0.016 165);
   --overlay: oklch(20% 0.025 165 / 0.55);
   --shadow-soft: 0 12px 36px oklch(28% 0.035 170 / 0.08);
+  --header-bg: oklch(100% 0 0 / 0.92);
+  color-scheme: light;
+}
+
+/* ---------- Mode gelap ---------- */
+:root.dark {
+  --background: oklch(19% 0.018 170);
+  --foreground: oklch(95% 0.008 165);
+  --primary: oklch(76% 0.13 162);
+  --primary-foreground: oklch(19% 0.018 170);
+  --secondary: oklch(29% 0.045 120);
+  --action: oklch(86% 0.16 96);
+  --action-hover: oklch(80% 0.15 96);
+  --action-foreground: oklch(22% 0.03 170);
+  --brand-yellow: oklch(84% 0.16 92);
+  --muted: oklch(23% 0.02 170);
+  --muted-foreground: oklch(74% 0.015 170);
+  --border: oklch(33% 0.02 170);
+  --overlay: oklch(8% 0.01 170 / 0.7);
+  --shadow-soft: 0 12px 36px oklch(0% 0 0 / 0.45);
+  --header-bg: oklch(19% 0.018 170 / 0.92);
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -27,6 +53,7 @@
   --color-secondary: var(--secondary);
   --color-action: var(--action);
   --color-action-hover: var(--action-hover);
+  --color-action-foreground: var(--action-foreground);
   --color-brand-yellow: var(--brand-yellow);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
@@ -42,6 +69,7 @@
   * { border-color: var(--border); }
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
   h1, h2, h3 { font-family: var(--font-heading); }
   button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
@@ -85,7 +113,7 @@
     @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-5 text-sm font-semibold whitespace-nowrap transition-colors select-none;
   }
   .btn svg { @apply size-4 shrink-0; }
-  .btn-action { @apply bg-action text-foreground shadow-sm hover:bg-action-hover; }
+  .btn-action { @apply bg-action text-action-foreground shadow-sm hover:bg-action-hover; }
   .btn-outline { @apply border border-border bg-background shadow-sm hover:bg-secondary; }
   .btn-ghost { @apply hover:bg-secondary; }
   .btn-lg { @apply min-h-12 px-7; }
@@ -149,6 +177,15 @@
   from { opacity: 0; transform: scale(0.97); }
   to { opacity: 1; transform: scale(1); }
 }
+
+/* Logo punya latar terang: di mode gelap tampil sebagai "kartu" agar tetap rapi */
+.brand-logo { mix-blend-mode: multiply; }
+.dark .brand-logo { mix-blend-mode: normal; border-radius: 10px; background: #fafbf6; padding: 3px 6px; }
+
+/* Ikon tombol tema */
+.theme-icon-dark { display: none; }
+.dark .theme-icon-light { display: none; }
+.dark .theme-icon-dark { display: inline; }
 
 /* Kunci scroll halaman saat dialog terbuka */
 html:has(dialog[open]) { overflow: hidden; }

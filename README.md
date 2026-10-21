@@ -80,6 +80,7 @@ Selesai — ketik `/menu` di grup.
 
 | Perintah | Fungsi |
 |---|---|
+| `/panduan` | Panduan lengkap langkah demi langkah (bisa dibuka semua anggota grup) |
 | `/menu` | Menu utama |
 | `/paket` | Tambah, ubah, urutkan, hapus paket & harga |
 | `/teks` | Ubah teks halaman (hero, keunggulan, langkah, dsb.) |

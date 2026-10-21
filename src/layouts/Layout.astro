@@ -19,7 +19,17 @@ const ogUrl = Astro.site ? new URL(ogImage.src, Astro.site).href : ogImage.src;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1a17" media="(prefers-color-scheme: dark)" />
+    <!-- Terapkan tema sebelum halaman tampil agar tidak berkedip -->
+    <script is:inline>
+      (function () {
+        var saved = null;
+        try { saved = localStorage.getItem('theme'); } catch (e) {}
+        var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.classList.toggle('dark', dark);
+      })();
+    </script>
     <meta name="format-detection" content="telephone=no" />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -40,5 +50,40 @@ const ogUrl = Astro.site ? new URL(ogImage.src, Astro.site).href : ogImage.src;
   </head>
   <body class="min-h-dvh">
     <slot />
+    <script>
+      const root = document.documentElement;
+      const media = window.matchMedia('(prefers-color-scheme: dark)');
+      const metas = document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]');
+
+      function apply(dark: boolean) {
+        root.classList.toggle('dark', dark);
+        metas.forEach((m) => (m.content = dark ? '#0f1a17' : '#ffffff'));
+        document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
+          btn.setAttribute('aria-label', dark ? 'Ganti ke mode terang' : 'Ganti ke mode gelap');
+          btn.setAttribute('aria-pressed', String(dark));
+        });
+      }
+
+      apply(root.classList.contains('dark'));
+
+      document.querySelectorAll('[data-theme-toggle]').forEach((btn) =>
+        btn.addEventListener('click', () => {
+          const dark = !root.classList.contains('dark');
+          apply(dark);
+          try {
+            localStorage.setItem('theme', dark ? 'dark' : 'light');
+          } catch {}
+        }),
+      );
+
+      // Ikuti pengaturan sistem selama pengunjung belum memilih sendiri
+      media.addEventListener('change', (e) => {
+        let saved: string | null = null;
+        try {
+          saved = localStorage.getItem('theme');
+        } catch {}
+        if (!saved) apply(e.matches);
+      });
+    </script>
   </body>
 </html>
