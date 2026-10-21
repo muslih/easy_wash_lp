@@ -16,6 +16,7 @@
     "check": "astro check"
   },
   "dependencies": {
+    "@astrojs/vercel": "^10.0.8",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^6.4.8",
     "grammy": "^1.46.0",

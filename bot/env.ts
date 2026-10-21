@@ -23,7 +23,7 @@ export const env = {
     return required('GITHUB_REPO'); // format: pemilik/nama-repo
   },
   get githubBranch() {
-    return process.env.GITHUB_BRANCH || 'main';
+    return process.env.GITHUB_BRANCH || 'master';
   },
   /** Folder proyek Astro di dalam repo. Kosongkan jika proyek ada di root repo. */
   get projectDir() {
@@ -31,6 +31,7 @@ export const env = {
     return dir ? dir + '/' : '';
   },
   get siteUrl() {
-    return process.env.SITE_URL || process.env.URL || '';
+    const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+    return process.env.SITE_URL || (vercel ? `https://${vercel}` : '');
   },
 };

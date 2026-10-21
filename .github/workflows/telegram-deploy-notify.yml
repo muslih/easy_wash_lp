@@ -1,0 +1,33 @@
+# Kirim kabar ke grup Telegram setiap Vercel selesai deploy production.
+# Butuh repository secrets: TELEGRAM_BOT_TOKEN dan TELEGRAM_GROUP_ID
+name: Kabar deploy ke Telegram
+
+on: deployment_status
+
+jobs:
+  notify:
+    if: >-
+      startsWith(github.event.deployment.environment, 'Production') &&
+      contains(fromJSON('["success","failure","error"]'), github.event.deployment_status.state)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kirim pesan ke grup
+        env:
+          TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT: ${{ secrets.TELEGRAM_GROUP_ID }}
+          STATE: ${{ github.event.deployment_status.state }}
+          LOG_URL: ${{ github.event.deployment_status.target_url }}
+          SHA: ${{ github.event.deployment.sha }}
+          SITE_URL: ${{ vars.SITE_URL || 'https://easy-wash-bjm.vercel.app' }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE=$(gh api "repos/${{ github.repository }}/commits/$SHA" --jq '.commit.message' | head -n1)
+          if [ "$STATE" = "success" ]; then
+            TEXT=$(printf '✅ Website sudah diperbarui\n%s\n%s' "$TITLE" "$SITE_URL")
+          else
+            TEXT=$(printf '❌ Pembaruan website gagal\n%s\nLog: %s' "$TITLE" "$LOG_URL")
+          fi
+          curl -sS -X POST "https://api.telegram.org/bot${TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${CHAT}" \
+            --data-urlencode "text=${TEXT}" \
+            --data-urlencode "disable_web_page_preview=true" > /dev/null
