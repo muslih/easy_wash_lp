@@ -1,11 +1,7 @@
 ---
-import Icon, { type Name } from './Icon.astro';
-
-const items: { icon: Name; title: string; text: string }[] = [
-  { icon: 'sparkles', title: 'Bersih sampai seratnya', text: 'Perawatan untuk setiap pakaian' },
-  { icon: 'message-circle', title: 'Pesan semudah chat', text: 'Langsung terhubung via WhatsApp' },
-  { icon: 'leaf', title: 'Rapi, wangi, siap pakai', text: 'Satu urusan lebih sedikit' },
-];
+import Icon from './Icon.astro';
+import { content } from '../data/config';
+const items = content.features;
 ---
 
 <section class="border-b border-border bg-background">

@@ -1,0 +1,96 @@
+{
+  "business": {
+    "name": "Easywash",
+    "phone": "0815-9114-401",
+    "address": "",
+    "hours": "",
+    "mapsUrl": ""
+  },
+  "seo": {
+    "title": "Easywash — Laundry bersih, hidup lebih mudah",
+    "description": "Pilih paket laundry Easywash dan pesan langsung melalui WhatsApp. Cuci, setrika, dan tanyakan status cucian dengan mudah."
+  },
+  "images": {
+    "hero": "easywash-laundry.jpg",
+    "logo": "easywash-logo.png"
+  },
+  "hero": {
+    "badge": "Sedikit cucian, lebih banyak waktu untukmu",
+    "wordmark1": "EASY",
+    "wordmark2": "WASH",
+    "titleLine1": "Bersihnya beres.",
+    "titleLine2": "Hidup lebih easy.",
+    "description": "Serahkan urusan cucian pada kami. Pilih paketmu, pesan lewat WhatsApp, dan nikmati hari tanpa repot.",
+    "primaryCta": "Pilih Paket Laundry",
+    "secondaryCta": "Cek Status",
+    "note": "Pakaianmu dirawat, bukan sekadar dicuci."
+  },
+  "features": [
+    { "icon": "sparkles", "title": "Bersih sampai seratnya", "text": "Perawatan untuk setiap pakaian" },
+    { "icon": "message-circle", "title": "Pesan semudah chat", "text": "Langsung terhubung via WhatsApp" },
+    { "icon": "leaf", "title": "Rapi, wangi, siap pakai", "text": "Satu urusan lebih sedikit" }
+  ],
+  "packagesSection": {
+    "eyebrow": "Paket laundry",
+    "title": "Ada paket untuk setiap kebutuhan.",
+    "subtitle": "Dari cucian sehari-hari hingga kebutuhan mendadak, kami bantu bereskan.",
+    "note": "Paket, harga, dan durasi berikut masih contoh.",
+    "footnote": "Berat dan total akhir dikonfirmasi setelah pakaian ditimbang."
+  },
+  "packages": [
+    {
+      "id": "cuci-lipat",
+      "name": "Cuci & Lipat",
+      "price": 7000,
+      "unit": "kg",
+      "duration": "2–3 hari",
+      "description": "Bersih, wangi, dan terlipat rapi. Siap menemani aktivitasmu.",
+      "features": ["Cuci & pengeringan", "Lipat rapi", "Pewangi pakaian"],
+      "icon": "washing-machine",
+      "featured": false,
+      "badge": ""
+    },
+    {
+      "id": "cuci-setrika",
+      "name": "Cuci & Setrika",
+      "price": 10000,
+      "unit": "kg",
+      "duration": "2–3 hari",
+      "description": "Perawatan lengkap untuk pakaian yang rapi setiap hari.",
+      "features": ["Semua layanan Cuci & Lipat", "Setrika hingga rapi", "Dikemas dengan baik"],
+      "icon": "shirt",
+      "featured": true,
+      "badge": "Pilihan lengkap"
+    },
+    {
+      "id": "express",
+      "name": "Express",
+      "price": 18000,
+      "unit": "kg",
+      "duration": "24 jam",
+      "description": "Saat waktumu berharga. Cucian beres lebih cepat.",
+      "features": ["Cuci & setrika lengkap", "Prioritas pengerjaan", "Siap dalam 24 jam"],
+      "icon": "zap",
+      "featured": false,
+      "badge": ""
+    }
+  ],
+  "stepsSection": {
+    "eyebrow": "Tanpa ribet",
+    "title": "Cucian beres dalam 3 langkah."
+  },
+  "steps": [
+    { "icon": "shirt", "title": "Pilih paketmu", "text": "Temukan layanan yang cocok untuk cucianmu." },
+    { "icon": "message-circle", "title": "Pesan lewat WhatsApp", "text": "Kirim detail pesanan dan konfirmasi dengan kami." },
+    { "icon": "package-check", "title": "Kami yang bereskan", "text": "Dapatkan kabar saat cucianmu sudah siap." }
+  ],
+  "statusCta": {
+    "title": "Sudah titip cucian?",
+    "text": "Tanyakan progresnya. Kami kabari lewat WhatsApp.",
+    "button": "Tanya Status Cucian"
+  },
+  "footer": {
+    "tagline": "CLEAN • FAST • FRESH"
+  },
+  "statuses": ["Diterima", "Sedang dicuci", "Sedang dikeringkan", "Sedang disetrika", "Siap diambil", "Selesai"]
+}

@@ -1,8 +1,9 @@
 ---
 import Sheet from './Sheet.astro';
+import { site } from '../data/config';
 ---
 
-<Sheet id="order" title="Pesan laundry" description="Lengkapi detail cucianmu untuk dikirim ke Easywash.">
+<Sheet id="order" title="Pesan laundry" description={`Lengkapi detail cucianmu untuk dikirim ke ${site.name}.`}>
   <form id="order-form" class="form-grid">
     <label>
       Nama
@@ -14,8 +15,8 @@ import Sheet from './Sheet.astro';
     </label>
     <div class="grid grid-cols-1 gap-4 min-[400px]:grid-cols-2">
       <label>
-        Perkiraan berat (kg)
-        <input name="weight" type="number" inputmode="decimal" min="1" max="100" step="0.5" value="3" required />
+        <span id="qty-label">Perkiraan berat (kg)</span>
+        <input name="weight" type="number" inputmode="decimal" min="0.5" max="100" step="0.5" value="3" required />
       </label>
       <label>
         Penyerahan
@@ -38,7 +39,7 @@ import Sheet from './Sheet.astro';
   </form>
 </Sheet>
 
-<Sheet id="check" title="Tanya status cucian" description="Kirim pertanyaan ke Easywash melalui WhatsApp.">
+<Sheet id="check" title="Tanya status cucian" description={`Kirim pertanyaan ke ${site.name} melalui WhatsApp.`}>
   <form id="check-form" class="form-grid">
     <label>
       Nama pemesan

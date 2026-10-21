@@ -1,13 +1,14 @@
 ---
 import { Image } from 'astro:assets';
-import logo from '../assets/easywash-logo.png';
+import { logoImage as logo } from '../data/images';
+import { site } from '../data/config';
 import Icon from './Icon.astro';
 ---
 
 <header class="sticky top-0 z-40 border-b border-transparent bg-background" data-header>
   <div class="page-width flex h-[68px] items-center justify-between gap-4 md:h-[88px]">
-    <a href="/" aria-label="Easywash beranda" class="shrink-0">
-      <Image src={logo} alt="Easywash — Clean, Fast, Fresh" width={244} class="h-[52px] w-auto mix-blend-multiply md:h-[70px]" loading="eager" />
+    <a href="/" aria-label={`${site.name} beranda`} class="shrink-0">
+      <Image src={logo} alt={site.name} width={244} class="h-[52px] w-auto mix-blend-multiply md:h-[70px]" loading="eager" />
     </a>
 
     <nav class="hidden items-center gap-8 text-sm md:flex" aria-label="Navigasi utama">

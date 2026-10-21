@@ -1,13 +1,28 @@
 ---
 import { Image } from 'astro:assets';
-import logo from '../assets/easywash-logo.png';
+import { logoImage as logo } from '../data/images';
+import { content, site } from '../data/config';
 import Icon from './Icon.astro';
 ---
 
 <footer class="border-t border-border pb-[calc(80px+env(safe-area-inset-bottom))] md:pb-0">
   <div class="page-width flex flex-col items-start gap-4 py-7 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-    <Image src={logo} alt="Easywash — Clean, Fast, Fresh" width={244} class="h-[60px] w-auto mix-blend-multiply md:h-[70px]" />
-    <p class="text-xs text-muted-foreground">© {new Date().getFullYear()} Easywash. CLEAN • FAST • FRESH</p>
+    <Image src={logo} alt={site.name} width={244} class="h-[60px] w-auto mix-blend-multiply md:h-[70px]" />
+    {
+      (site.address || site.hours) && (
+        <div class="grid gap-1 text-xs text-muted-foreground">
+          {site.address && (
+            site.mapsUrl ? (
+              <a href={site.mapsUrl} target="_blank" rel="noopener" class="hover:text-primary">📍 {site.address}</a>
+            ) : (
+              <span>📍 {site.address}</span>
+            )
+          )}
+          {site.hours && <span>🕘 {site.hours}</span>}
+        </div>
+      )
+    }
+    <p class="text-xs text-muted-foreground">© {new Date().getFullYear()} {site.name}. {content.footer.tagline}</p>
     <a href="/status" class="inline-flex min-h-10 items-center gap-1 text-xs text-muted-foreground hover:text-primary">
       Kirim status pelanggan
       <Icon name="arrow-right" size={12} />

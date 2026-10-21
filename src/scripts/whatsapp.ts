@@ -1,11 +1,4 @@
-import { site, packages, formatRupiah } from '../data/config';
-
-/** Normalisasi nomor (08xx → 628xx). Mengembalikan null jika tidak valid. */
-export function normalizePhone(phone: string): string | null {
-  let number = phone.replace(/[^0-9]/g, '');
-  if (number.startsWith('0')) number = '62' + number.slice(1);
-  return /^\d{9,15}$/.test(number) ? number : null;
-}
+import { site, packages, formatRupiah, normalizePhone } from '../data/config';
 
 export function openWhatsApp(phone: string, message: string, invalidText?: string) {
   const number = normalizePhone(phone);
@@ -47,7 +40,7 @@ export function initHomePage() {
   document.querySelectorAll<HTMLElement>('[data-action]').forEach((btn) =>
     btn.addEventListener('click', () => {
       if (btn.dataset.action === 'check') check?.showModal();
-      else openWhatsApp(site.phone, 'Halo Easywash, saya ingin bertanya tentang layanan laundry.');
+      else openWhatsApp(site.phone, `Halo ${site.name}, saya ingin bertanya tentang layanan laundry.`);
     }),
   );
 
@@ -62,7 +55,10 @@ export function initHomePage() {
   document.querySelectorAll<HTMLElement>('[data-package]').forEach((btn) =>
     btn.addEventListener('click', () => {
       selected = Number(btn.dataset.package);
-      if (titleEl) titleEl.textContent = 'Pesan ' + packages[selected].name;
+      const pkg = packages[selected];
+      if (titleEl) titleEl.textContent = 'Pesan ' + pkg.name;
+      const qtyLabel = document.getElementById('qty-label');
+      if (qtyLabel) qtyLabel.textContent = pkg.unit === 'kg' ? 'Perkiraan berat (kg)' : `Perkiraan jumlah (${pkg.unit})`;
       updateTotal();
       orderDialog?.showModal();
     }),
@@ -76,7 +72,7 @@ export function initHomePage() {
     const pkg = packages[selected];
     openWhatsApp(
       site.phone,
-      `Halo Easywash, saya ingin pesan laundry.\n\nNama: ${field('name').value}\nWhatsApp: ${field('phone').value}\nPaket: ${pkg.name}\nPerkiraan berat: ${weight()} kg\nEstimasi total: ${formatRupiah(pkg.price * weight())}\nPenyerahan: ${field('delivery').value}\nAlamat/catatan: ${field('notes').value || '-'}\n\nMohon konfirmasi harga dan waktu selesai. Harga ini masih contoh.`,
+      `Halo ${site.name}, saya ingin pesan laundry.\n\nNama: ${field('name').value}\nWhatsApp: ${field('phone').value}\nPaket: ${pkg.name}\nPerkiraan ${pkg.unit === 'kg' ? 'berat' : 'jumlah'}: ${weight()} ${pkg.unit}\nEstimasi total: ${formatRupiah(pkg.price * weight())}\nPenyerahan: ${field('delivery').value}\nAlamat/catatan: ${field('notes').value || '-'}\n\nMohon konfirmasi harga dan waktu selesai.`,
     );
   });
 
@@ -85,7 +81,7 @@ export function initHomePage() {
     const f = (name: string) => (checkForm.elements.namedItem(name) as HTMLInputElement).value;
     openWhatsApp(
       site.phone,
-      `Halo Easywash, saya ingin menanyakan status cucian.\nNama: ${f('name')}\nNomor pesanan: ${f('id') || 'Belum ada'}\nTerima kasih.`,
+      `Halo ${site.name}, saya ingin menanyakan status cucian.\nNama: ${f('name')}\nNomor pesanan: ${f('id') || 'Belum ada'}\nTerima kasih.`,
     );
   });
 }
@@ -97,9 +93,9 @@ export function initStatusPage() {
   const f = (name: string) => (form.elements.namedItem(name) as HTMLInputElement).value;
 
   const message = () =>
-    `Halo ${f('name') || 'pelanggan'} 👋\nKabar cucian dari Easywash!\n\nNomor pesanan: ${f('id') || '-'}\nStatus: ${f('status')}\n${
+    `Halo ${f('name') || 'pelanggan'} 👋\nKabar cucian dari ${site.name}!\n\nNomor pesanan: ${f('id') || '-'}\nStatus: ${f('status')}\n${
       f('status') === 'Siap diambil' ? 'Cucianmu sudah bersih dan rapi, siap diambil. ✨\n' : ''
-    }${f('notes') ? 'Catatan: ' + f('notes') + '\n' : ''}\nTerima kasih sudah memilih Easywash.`;
+    }${f('notes') ? 'Catatan: ' + f('notes') + '\n' : ''}\nTerima kasih sudah memilih ${site.name}.`;
 
   const render = () => (preview.textContent = message());
   form.addEventListener('input', render);

@@ -10,14 +10,24 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "bot": "node --env-file=.env --import tsx bot/polling.ts",
+    "bot:setup": "node --env-file=.env --import tsx scripts/setup-bot.ts",
+    "check": "astro check"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^6.4.8",
+    "grammy": "^1.46.0",
     "tailwindcss": "^4.3.3"
   },
   "overrides": {
     "vite": "^7.3.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@types/node": "^22.20.5",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
   }
 }

@@ -1,0 +1,11 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[functions]
+  node_bundler = "esbuild"
+  # grammY tidak di-bundle agar kompatibel dengan format ESM
+  external_node_modules = ["grammy"]

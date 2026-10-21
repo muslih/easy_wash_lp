@@ -1,15 +1,17 @@
 ---
 import Icon from './Icon.astro';
+import { content } from '../data/config';
+const c = content.statusCta;
 ---
 
 <section class="page-width flex flex-col items-start gap-6 py-12 sm:flex-row sm:items-center sm:justify-between">
   <div>
-    <h2 class="text-2xl font-bold">Sudah titip cucian?</h2>
-    <p class="mt-2 text-sm text-muted-foreground">Tanyakan progresnya. Kami kabari lewat WhatsApp.</p>
+    <h2 class="text-2xl font-bold">{c.title}</h2>
+    <p class="mt-2 text-sm text-muted-foreground">{c.text}</p>
   </div>
   <button type="button" class="btn btn-outline btn-lg w-full sm:w-auto" data-action="check">
     <Icon name="message-circle" />
-    Tanya Status Cucian
+    {c.button}
     <Icon name="arrow-right" />
   </button>
 </section>

@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
-import { site } from '../data/config';
-import heroImage from '../assets/easywash-laundry.jpg';
+import { content } from '../data/config';
+import { heroImage } from '../data/images';
 import { getImage } from 'astro:assets';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
   description?: string;
 }
 
-const { title = `${site.name} — ${site.tagline}`, description = site.description } = Astro.props;
+const { title = content.seo.title, description = content.seo.description } = Astro.props;
 const ogImage = await getImage({ src: heroImage, width: 1200, format: 'jpg' });
 const ogUrl = Astro.site ? new URL(ogImage.src, Astro.site).href : ogImage.src;
 ---
