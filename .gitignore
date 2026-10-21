@@ -3,5 +3,4 @@ dist/
 .astro/
 .env
 .DS_Store
-.env
-.netlify/
+.vercel/
